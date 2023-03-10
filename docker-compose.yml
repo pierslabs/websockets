@@ -1,0 +1,43 @@
+version: '3.8'
+
+networks:
+  sockets-network:
+    driver: bridge
+services:
+  client-sockets:
+    build:
+      context: ./client-sockets
+      dockerfile: Dockerfile
+    image: client-sockets
+    container_name: client-sockets-container
+    volumes:
+      - /app/node_modules
+      - ./client-sockets/:/app
+    depends_on:
+      - server-sockets
+    ports:
+      - "3001:5173"
+    networks:
+      - sockets-network
+    stdin_open: true
+    tty: true
+
+  server-sockets:
+    build:
+      context: ./server-sockets
+      dockerfile: Dockerfile
+    image: server-sockets
+    container_name: server-sockets
+    volumes:
+      - /app/node_modules
+      - ./server-sockets/:/app
+    ports:
+      - "3002:3000"
+    networks:
+      - sockets-network
+
+volumes:
+  postgres-sockets-volume:
+  node_modules:
+  sockets-root:
+    driver: local
