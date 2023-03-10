@@ -1,8 +1,6 @@
 
 FROM node:alpine
 
-RUN yarn global add nodemon 
-
 WORKDIR /app
 
 COPY package.json .
